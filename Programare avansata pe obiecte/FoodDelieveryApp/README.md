@@ -96,7 +96,7 @@ public class Beverage extends Product
 // in model/Restaurant.java
  private List<Product> products;
  ```
-- cel puțin o clasa serviciu care sa expună operațiile: OrderServiceImpl, RatingServiceImpl, RestaurantServiceImpl, UserSericeImpl
+- cel puțin o clasa serviciu care sa expună operațiile: OrderServiceImpl, RatingServiceImpl, RestaurantServiceImpl, UserServiceImpl
 - o clasa main din care sunt făcute apeluri către servicii
 ```java
 public class Main {
