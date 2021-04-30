@@ -133,4 +133,17 @@ public class RestaurantServiceImpl implements RestaurantService{
     public static HashMap<String, Restaurant> getRestaurants(){
         return restaurants;
     }
+
+    public String foodToLine(String restName, String prodName, String prodDesc, int price, int g, List <String> ing){
+        String ingredientsStr = String.join(";", ing);
+        List<String> row = Arrays.asList(restName, prodName, prodDesc, Integer.toString(price), Integer.toString(g), ingredientsStr);
+        String line = "\n" + String.join(",", row) ;
+        return line;
+    }
+
+    public String beverageToLine(String restName, String prodName, String prodDesc, int price, int ml){
+        List<String> row = Arrays.asList(restName, prodName, prodDesc, Integer.toString(price), Integer.toString(ml));
+        String line = "\n" + String.join(",", row) ;
+        return line;
+    }
 }

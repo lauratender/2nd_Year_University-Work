@@ -2,6 +2,7 @@ package services;
 
 import model.User;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,6 +49,12 @@ public class UserServiceImpl implements UserService{
         if(!found)
             email = null;
         return email;
+    }
+
+    public String userToLine(String name, String email, String password, String telefon, String address){
+        List<String> row = Arrays.asList(name, email, password, telefon, address);
+        String line = "\n" + String.join(",", row) ;
+        return line;
     }
 
     public static HashMap<String, User> getUsers(){

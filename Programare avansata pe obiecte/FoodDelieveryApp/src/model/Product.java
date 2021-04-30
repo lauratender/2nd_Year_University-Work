@@ -1,10 +1,10 @@
 package model;
 
 public abstract class Product {
-    private String productName;
-    private String productDesc;
-    private Restaurant restaurant;
-    private int price;
+    protected String productName;
+    protected String productDesc;
+    protected Restaurant restaurant;
+    protected int price;
 
     public Product(String productName, String productDesc, Restaurant restaurant, int price) {
         this.productName = productName;

@@ -1,8 +1,7 @@
 package services;
 
 import data.Reader;
-
-import java.util.ArrayList;
+import data.Writer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +11,9 @@ public class ReadingService {
     final private RestaurantServiceImpl restaurantService;
     final private UserServiceImpl userService;
     final private RatingServiceImpl ratingService;
+    final private AuditService auditService;
     final private Reader reader;
+    final private Writer writer;
     private static ReadingService instance = null;
 
     private ReadingService(){
@@ -20,7 +21,9 @@ public class ReadingService {
         restaurantService = RestaurantServiceImpl.getInstance();
         userService = UserServiceImpl.getInstance();
         ratingService = RatingServiceImpl.getInstance();
+        auditService = AuditService.getInstance();
         reader = Reader.getInstance();
+        writer = Writer.getInstance();
         insertData();
     }
 
@@ -51,14 +54,18 @@ public class ReadingService {
     }
 
     private void watchMenue(String option, String email){
-        if (option.equals("1"))
+        if (option.equals("1")) {
             restaurantService.seeProducts();
+            auditService.writeAction("watched menue");
+        }
         else{
             Scanner scanner = new Scanner(System.in);
             System.out.println("Introduceti numele restaurantului");
             String restaurant = scanner.nextLine();
             restaurantService.seeProducts(restaurant);
+            auditService.writeAction("watched restaurant's menue");
         }
+
     }
 
     private void order(String email){
@@ -68,6 +75,7 @@ public class ReadingService {
         System.out.println("Introduceti numele produselor");
         String[] productsList = scanner.nextLine().split(" ");
         orderService.Order(restName, email, Arrays.asList(productsList.clone()));
+        auditService.writeAction("ordered");
     }
 
     private void rate(String email){
@@ -77,6 +85,7 @@ public class ReadingService {
         System.out.println("Scrieti ratingul de la 1 la 5");
         int value = scanner.nextInt();
         ratingService.giveRating(email, restName, value);
+        auditService.writeAction("rated");
     }
 
     private void seeRating(){
@@ -84,6 +93,7 @@ public class ReadingService {
         System.out.println("Introduceti numele restarantului");
         String restName = scanner.nextLine();
         ratingService.seeRating(restName);
+        auditService.writeAction("watched rating");
     }
 
     private String Register(){
@@ -97,6 +107,8 @@ public class ReadingService {
         phoneNumber = scanner.nextLine();
         userAddress = scanner.nextLine();
         userService.addUser(name, email, password, phoneNumber, userAddress);
+        String line = userService.userToLine(name, email, password, phoneNumber, userAddress);
+        writer.writeLine("user", line);
         return email;
     }
 
@@ -121,6 +133,10 @@ public class ReadingService {
 
         if(email == null){
             System.out.println("Adresa de email nu este exista sau optiunea selectata nu este corecta.");
+            if(option.equals("1"))
+                auditService.writeAction("logged in");
+            if(option.equals("2"))
+                auditService.writeAction("registered");
             return;
         }
 
@@ -145,8 +161,10 @@ public class ReadingService {
                 order(email);
             if (option.equals("5"))
                 rate(email);
-            if (option.equals("6"))
+            if (option.equals("6")) {
                 orderService.printUserOrders(email);
+                auditService.writeAction("watched orders");
+            }
         }
     }
 
@@ -179,17 +197,26 @@ public class ReadingService {
                 String ing1 = scanner.nextLine();
                 List <String> ing = Arrays.asList(ing1.split(" ").clone());
                 restaurantService.addFood(restName, prodName, prodDesc, price, g, ing);
+                // scriu in food
+                String line = restaurantService.foodToLine(restName, prodName, prodDesc, price, g, ing);
+                writer.writeLine("food", line);
+                auditService.writeAction("added food");
             }
 
             if(option.equals("2")){
                 System.out.println("Introduceti ml produsului");
                 int ml = scanner.nextInt();
                 restaurantService.addBeverage(restName, prodName, prodDesc, price, ml);
+                // scriu in beverage
+                String line = restaurantService.beverageToLine(restName, prodName, prodDesc, price, ml);
+                writer.writeLine("beverage", line);
+                auditService.writeAction("added beverage");
             }
         }
     }
 
     private void addDriver(){
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Introduceti numele soferului");
         String name = scanner.nextLine();
@@ -204,7 +231,12 @@ public class ReadingService {
         String carName = scanner.nextLine();
         System.out.println("Introduceti numarul masinii soferului");
         String carNumber = scanner.nextLine();
+
         orderService.addDriver(name, email, telefon, salary, carName, carNumber);
+
+        String line = orderService.driverToLine(name, email, telefon, salary, carName, carNumber);
+        writer.writeLine("driver", line);
+        auditService.writeAction("added driver");
     }
 
     private void Admin(){
@@ -218,8 +250,10 @@ public class ReadingService {
             String option = scanner.nextLine();
             if (option.equals("exit"))
                 return;
-            if (option.equals("1"))
+            if (option.equals("1")) {
                 orderService.printOrdersInProgress();
+                auditService.writeAction("watched orders in progress");
+            }
             if(option.equals("2"))
                 addDriver();
         }

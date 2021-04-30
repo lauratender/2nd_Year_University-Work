@@ -92,6 +92,12 @@ public class OrderServiceImpl implements OrderService{
         }
     }
 
+    public String driverToLine(String name, String email, String telefon, double salary, String carName, String carNr){
+        List<String> row = Arrays.asList(name, email, telefon, Double.toString(salary), carName, carNr);
+        String line = "\n" + String.join(",", row) ;
+        return line;
+    }
+
     @Override
     public void printUserOrders(String email){
         for (Order o:ordersHistory)
