@@ -1,5 +1,6 @@
 restName, name, description, price, quantity
-"McDonald's", "Cola", "Zero",5,500
-"Springtime", "Fanta", "Portocale",5,500
-"Pizza Hut", "Sprite", "Castraveti",5,500
-"KFC", "Pepsi", "Max",5,500
+"McDonald's"," ""Cola"""," ""Zero""",5,500
+"Springtime"," ""Fanta"""," ""Portocale""",5,500
+"Pizza Hut"," ""Sprite"""," ""Castraveti""",5,500
+"KFC"," ""Pepsi"""," ""Max""",5,500
+"KFC",Cola,Lime,5,333

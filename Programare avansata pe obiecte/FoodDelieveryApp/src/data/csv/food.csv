@@ -3,3 +3,4 @@ restName, name, description, price, quantity, ingredients
 "Pizza Hut", "Pizza Roma", "blat italian",22,210, "chifla; mozzarela; sunca; ciuperci; masline"
 "McDonald's", "BigMac", "Burger",30,400, "chifla; carne de vita; salata"
 "KFC", "Crispy Strips", "8 bucati",28,240, "piept de pui"
+"KFC",Pui Kentucky,Picant,15,200,Pui
