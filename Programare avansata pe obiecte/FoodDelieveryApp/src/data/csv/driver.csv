@@ -1,0 +1,6 @@
+name, email, phone, salary, car, carNr
+"George Popescu", "george@gmail.com", "0744444444",1500, "Renault", "B100AAA"
+"Alex Popa", "alex@gmail.com", "0733333333",1500, "Renault", "B100AAA"
+"Stefan Georgescu", "stefan@gmail.com", "0722222222",1500, "Renault", "B100AAA"
+"Andrei Ionescu", "andrei@gmail.com", "0711111111", 1500, "Renault", "B100AAA"
+"Ioan Vasile", "ioan@gmail.com", "0700000000", 1500, "Renault", "B100AAA"

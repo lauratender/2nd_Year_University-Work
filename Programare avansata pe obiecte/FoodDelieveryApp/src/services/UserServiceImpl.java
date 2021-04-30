@@ -3,6 +3,7 @@ package services;
 import model.User;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class UserServiceImpl implements UserService{
     private static UserServiceImpl instance = null;
@@ -22,6 +23,20 @@ public class UserServiceImpl implements UserService{
     public void addUser(String n, String e, String ps, String pn, String ad){
         User u = new User(n, e, ps, pn, ad);
         users.put(e, u);
+    }
+
+    public void addUsers(List<List<String>> usersParam){
+        int i = 1;
+        while (i < usersParam.size()){
+            List <String> line = usersParam.get(i);
+            String name = line.get(0);
+            String email = line.get(1);
+            String password = line.get(2);
+            String phoneNumber = line.get(3);
+            String address = line.get(4);
+            addUser(name, email, password, phoneNumber, address);
+            i += 1;
+        }
     }
 
     @Override

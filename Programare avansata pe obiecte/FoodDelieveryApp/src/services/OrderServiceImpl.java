@@ -77,6 +77,21 @@ public class OrderServiceImpl implements OrderService{
             driversAvailable.add(d);
     }
 
+    public void addDrivers(List <List <String>> driversParam){
+        int i = 1;
+        while (i < driversParam.size()){
+            List <String> line = driversParam.get(i);
+            String name = line.get(0);
+            String email = line.get(1);
+            String phoneNumber = line.get(2);
+            Double salary = Double.parseDouble(line.get(3));
+            String carName = line.get(4);
+            String carNumber = line.get(4);
+            addDriver(name, email, phoneNumber, salary, carName, carNumber);
+            i += 1;
+        }
+    }
+
     @Override
     public void printUserOrders(String email){
         for (Order o:ordersHistory)

@@ -1,5 +1,7 @@
 package services;
 
+import data.Reader;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +12,7 @@ public class ReadingService {
     final private RestaurantServiceImpl restaurantService;
     final private UserServiceImpl userService;
     final private RatingServiceImpl ratingService;
+    final private Reader reader;
     private static ReadingService instance = null;
 
     private ReadingService(){
@@ -17,6 +20,7 @@ public class ReadingService {
         restaurantService = RestaurantServiceImpl.getInstance();
         userService = UserServiceImpl.getInstance();
         ratingService = RatingServiceImpl.getInstance();
+        reader = Reader.getInstance();
         insertData();
     }
 
@@ -25,51 +29,25 @@ public class ReadingService {
             instance = new ReadingService();
         return instance;
     }
-    private void insertData(){
+
+    private void insertData() {
         // adaugare restaurante
-        restaurantService.addRestaurant("Springtime", "Academiei 3-5");
-        restaurantService.addRestaurant("Pizza Hut", "Dorobanti 5");
-        restaurantService.addRestaurant("McDonald's", "Unirii 1");
-        restaurantService.addRestaurant("KFC", "Regina Elisabeta 23");
+        List<List<String>> restaurants = reader.read("restaurant");
+        restaurantService.addRestaurants(restaurants);
 
-        // adaugare meniu
-        List <String> ings1 = new ArrayList<>();
-        ings1.add("Piept de pui");
-        ings1.add("Carne de vita");
-        ings1.add("Castraveti");
-        restaurantService.addFood("Springtime", "Shaorma", "pe plita", 19, 415, ings1);
+        List<List<String>> foods = reader.read("food");
+        restaurantService.addFoods(foods);
 
-        List <String> ings3 = new ArrayList<>();
-        ings3.add("Mozzarella");
-        ings3.add("Sunca");
-        ings3.add("Ciuperci");
-        ings3.add("Masline");
-        restaurantService.addFood("Pizza Hut", "PizzaRoma", "Blat italian", 22, 210, ings3);
-
-        List <String> ings2 = new ArrayList<>();
-        ings2.add("Chifla");
-        ings2.add("Carne de vita");
-        ings2.add("Salata");
-        restaurantService.addFood("McDonald's", "BigMac", "Burger", 30, 400, ings2);
-
-        List <String> ings4 = new ArrayList<>();
-        ings4.add("Piept de pui");
-        restaurantService.addFood("KFC", "CrispyStrips", "8", 28, 240, ings4);
-
-        restaurantService.addBeverage("McDonald's", "Cola", "Zero", 5, 500);
-        restaurantService.addBeverage("Springtime", "Fanta", "Portocale", 5, 500);
-        restaurantService.addBeverage("Pizza Hut", "Sprite", "Castraveti", 5, 500);
-        restaurantService.addBeverage("KFC", "Pepsi", "Max", 5, 500);
+        List<List<String>> beverages = reader.read("beverage");
+        restaurantService.addBeverages(beverages);
 
         // adaugare useri
-        userService.addUser("Laura", "lau.tender@gmail.com", "123", "0755555555", "gr19");
+        List<List<String>> users = reader.read("user");
+        userService.addUsers(users);
 
         // adaugare soferi
-        orderService.addDriver("George Popescu", "george@gmail.com", "0744444444", 1500, "Renault", "B100AAA");
-        orderService.addDriver("Alex Popa", "alex@gmail.com", "0733333333", 1500, "Renault", "B100AAA");
-        orderService.addDriver("Stefan Georgescu", "stefan@gmail.com", "0722222222", 1500, "Renault", "B100AAA");
-        orderService.addDriver("Andrei Ionescu", "andrei@gmail.com", "0711111111", 1500, "Renault", "B100AAA");
-        orderService.addDriver("Ioan Vasile", "ioan@gmail.com", "0700000000", 1500, "Renault", "B100AAA");
+        List<List<String>> drivers = reader.read("driver");
+        orderService.addDrivers(drivers);
     }
 
     private void watchMenue(String option, String email){

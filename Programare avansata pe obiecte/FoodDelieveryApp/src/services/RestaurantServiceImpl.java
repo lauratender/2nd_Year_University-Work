@@ -3,6 +3,7 @@ package services;
 import model.Restaurant;
 import model.User;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +34,20 @@ public class RestaurantServiceImpl implements RestaurantService{
         restaurants.put(name, r);
     }
 
+    public void addRestaurants(List<List<String>> restaurantsParam) {
+        int i = 1;
+        while (i < restaurantsParam.size()){
+            List <String> line = restaurantsParam.get(i);
+            String name = line.get(0);
+            String address = line.get(1);
+            Restaurant r = new Restaurant(name, address);
+            restaurants.put(name, r);
+            i += 1;
+        }
+        //Restaurant r = new Restaurant(name, address);
+        //restaurants.put(name, r);
+    }
+
     /*public void AddProduct(String name, String desc, int pr, boolean type, int quantity){
         model.Product p;
         if(!type) // beverage
@@ -54,6 +69,21 @@ public class RestaurantServiceImpl implements RestaurantService{
         r.AddFood(name, desc, pr, quantity, ingredients);
     }
 
+    public void addFoods(List<List <String>> foodsParam){
+        int i = 1;
+        while (i < foodsParam.size()){
+            List <String> line = foodsParam.get(i);
+            String restName = line.get(0);
+            String productName = line.get(1);
+            String desc = line.get(2);
+            int price = Integer.parseInt(line.get(3));
+            int quantity = Integer.parseInt(line.get(4));
+            List <String> ingredients = Arrays.asList(line.get(5).split(";"));
+            addFood(restName, productName, desc, price, quantity, ingredients);
+            i += 1;
+        }
+    }
+
     @Override
     public void addBeverage(String restName, String name, String desc, int pr, int quantity){
         Restaurant r;
@@ -64,6 +94,20 @@ public class RestaurantServiceImpl implements RestaurantService{
             return;
         }
         r.AddBeverage(name, desc, pr, quantity);
+    }
+
+    public void addBeverages(List<List <String>> beveragesParam){
+        int i = 1;
+        while (i < beveragesParam.size()){
+            List <String> line = beveragesParam.get(i);
+            String restName = line.get(0);
+            String productName = line.get(1);
+            String desc = line.get(2);
+            int price = Integer.parseInt(line.get(3));
+            int quantity = Integer.parseInt(line.get(4));
+            addBeverage(restName, productName, desc, price, quantity);
+            i += 1;
+        }
     }
 
     @Override

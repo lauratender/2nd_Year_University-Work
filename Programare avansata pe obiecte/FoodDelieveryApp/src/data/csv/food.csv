@@ -1,0 +1,5 @@
+restName, name, description, price, quantity, ingredients
+"Springtime", "Shaorma", "pe plita",19,415, "chifla; piept de pui; lipie; castraveti"
+"Pizza Hut", "Pizza Roma", "blat italian",22,210, "chifla; mozzarela; sunca; ciuperci; masline"
+"McDonald's", "BigMac", "Burger",30,400, "chifla; carne de vita; salata"
+"KFC", "Crispy Strips", "8 bucati",28,240, "piept de pui"
