@@ -106,3 +106,10 @@ public class Main {
     }
 }
  ```
+### Cerințele celei de-a doua etape
+1.	Extindeți proiectul din prima etapa prin realizarea persistentei utilizând fișiere.
+- se vor realiza fișiere de tip csv pentru cel puțin 4 dintre clasele definite in prima etapa.
+- se vor realiza servicii singleton generice pentru scrierea și citirea din fișiere
+- la pornirea programului se vor încărca datele din fișiere utilizând serviciile create
+2. Realizarea unui serviciu de audit
+- se va realiza un serviciu care sa scrie într-un fișier de tip CSV de fiecare data când este executata una dintre acțiunile descrise in prima etapa. Structura fișierului: nume_actiune, timestamp
