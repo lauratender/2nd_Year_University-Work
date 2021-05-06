@@ -52,14 +52,16 @@ public class OrderServiceImpl implements OrderService{
             Product p = restaurants.get(restName).takeProduct(s);
             if(p != null)
                 products.add(p);
-            else
+            else {
                 System.out.println("Comanda a fost anulata pentru ca produsul " + s + " nu a fost gasit la resturantul " + restName);
-            return;
+                return;
+            }
         }
         Order o = new Order(id, emailUser, products);
         o.assignDriver(driversAvailable.get(driversAvailable.size()-1));
         driversAvailable.remove(driversAvailable.size()-1);
         currentOrders.add(o);
+        System.out.println(o);
         o.PrintOrder();
     }
 

@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Writer {
-    private static final String COMMA_DELIMITER = ",";
     private static Writer instance = null;
 
     private Writer(){}
@@ -20,12 +19,6 @@ public class Writer {
             bw.write(line);
             bw.close();
 
-           /*
-            FileWriter csvWriter = new FileWriter(path);
-            csvWriter.append(line);
-            csvWriter.flush();
-            csvWriter.close();
-            */
         } catch (IOException e) {
             e.printStackTrace();
         }

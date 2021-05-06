@@ -2,9 +2,8 @@ package services;
 
 import data.Reader;
 import data.Writer;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+
+import java.util.*;
 
 public class ReadingService {
     final private OrderServiceImpl orderService;
@@ -38,6 +37,7 @@ public class ReadingService {
         List<List<String>> restaurants = reader.read("restaurant");
         restaurantService.addRestaurants(restaurants);
 
+        //adaugare produse
         List<List<String>> foods = reader.read("food");
         restaurantService.addFoods(foods);
 
@@ -72,9 +72,19 @@ public class ReadingService {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Introduceti numele restarantului");
         String restName = scanner.nextLine();
-        System.out.println("Introduceti numele produselor");
-        String[] productsList = scanner.nextLine().split(" ");
-        orderService.Order(restName, email, Arrays.asList(productsList.clone()));
+
+        System.out.println("Introduceti numarul produselor");
+        int nrProduse = scanner.nextInt();
+        scanner.nextLine();
+
+        List<String> produse = new ArrayList<>();
+        System.out.println("Introduceti numele produselor pe cate o linie");
+        while (nrProduse > 0){
+            String produs = scanner.nextLine();
+            produse.add(produs);
+            nrProduse -= 1;
+        }
+        orderService.Order(restName, email, produse);
         auditService.writeAction("ordered");
     }
 
@@ -193,9 +203,19 @@ public class ReadingService {
                 System.out.println("Introduceti gramajul produsului");
                 int g = scanner.nextInt();
                 scanner.nextLine();
-                System.out.println("Introduceti ingredientele produsului");
-                String ing1 = scanner.nextLine();
-                List <String> ing = Arrays.asList(ing1.split(" ").clone());
+
+                System.out.println("Introduceti numarul ingredientelor");
+                int nrIngrediente = scanner.nextInt();
+                scanner.nextLine();
+
+                ArrayList<String> ing = new ArrayList<>();
+                System.out.println("Introduceti numele produselor pe cate o linie");
+                while (nrIngrediente > 0){
+                    String ingredient = scanner.nextLine();
+                    ing.add(ingredient);
+                    nrIngrediente -= 1;
+                }
+
                 restaurantService.addFood(restName, prodName, prodDesc, price, g, ing);
                 // scriu in food
                 String line = restaurantService.foodToLine(restName, prodName, prodDesc, price, g, ing);
