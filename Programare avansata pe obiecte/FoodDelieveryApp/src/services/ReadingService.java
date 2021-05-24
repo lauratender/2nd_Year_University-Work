@@ -2,6 +2,7 @@ package services;
 
 import data.Reader;
 import data.Writer;
+import database.CRUD;
 
 import java.util.*;
 
@@ -34,22 +35,28 @@ public class ReadingService {
 
     private void insertData() {
         // adaugare restaurante
-        List<List<String>> restaurants = reader.read("restaurant");
+        //List<List<String>> restaurants = reader.read("restaurant");
+        List<List<String>> restaurants = CRUD.getRestaurants();
+        //System.out.println(restaurants);
         restaurantService.addRestaurants(restaurants);
 
         //adaugare produse
-        List<List<String>> foods = reader.read("food");
+        //List<List<String>> foods = reader.read("food");
+        List<List<String>> foods = CRUD.getFoods();
         restaurantService.addFoods(foods);
 
-        List<List<String>> beverages = reader.read("beverage");
+        //List<List<String>> beverages = reader.read("beverage");
+        List<List<String>> beverages = CRUD.getBeverages();
         restaurantService.addBeverages(beverages);
 
         // adaugare useri
-        List<List<String>> users = reader.read("user");
+        //List<List<String>> users = reader.read("user");
+        List<List<String>> users = CRUD.getUsers();
         userService.addUsers(users);
 
         // adaugare soferi
-        List<List<String>> drivers = reader.read("driver");
+        //List<List<String>> drivers = reader.read("driver");
+        List<List<String>> drivers = CRUD.getDrivers();
         orderService.addDrivers(drivers);
     }
 

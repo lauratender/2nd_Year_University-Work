@@ -35,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     public void addRestaurants(List<List<String>> restaurantsParam) {
-        int i = 1;
+        int i = 0;
         while (i < restaurantsParam.size()){
             List <String> line = restaurantsParam.get(i);
             String name = line.get(0);
@@ -60,6 +60,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public void addFood(String restName, String name, String desc, int pr, int quantity, List<String> ingredients) {
         Restaurant r;
+        //System.out.println(restaurants);
         if (restaurants.containsKey(restName))
             r = restaurants.get(restName);
         else {
@@ -70,7 +71,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     public void addFoods(List<List <String>> foodsParam){
-        int i = 1;
+        int i = 0;
         while (i < foodsParam.size()){
             List <String> line = foodsParam.get(i);
             String restName = line.get(0);
@@ -97,7 +98,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     public void addBeverages(List<List <String>> beveragesParam){
-        int i = 1;
+        int i = 0;
         while (i < beveragesParam.size()){
             List <String> line = beveragesParam.get(i);
             String restName = line.get(0);
