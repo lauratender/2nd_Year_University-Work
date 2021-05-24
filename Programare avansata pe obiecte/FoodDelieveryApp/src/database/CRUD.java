@@ -171,6 +171,20 @@ public class CRUD {
             return false;
         }
     }
+    public static void addRestaurant(String restName, String address){
+        try {
+            String sql = "INSERT INTO restaurant (restaurant_name, address) VALUES (?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, restName);
+            statement.setString(2, address);
+            int rows = statement.executeUpdate();
+            if(rows > 0){
+                System.out.println("Restaurant added succesfully.");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     public static void addFood(String restName, String prodName, String prodDesc, int price, int g, String ing){
         try {
             String sql = "INSERT INTO food (restaurant_name, food_name, description, price, quantity, ingredients) VALUES (?, ?, ?, ?, ?, ?)";
@@ -230,6 +244,128 @@ public class CRUD {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, actionName);
             statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static void changePassword(String email, String newPassword){
+        try {
+            String sql = "UPDATE user SET password = ? WHERE email = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newPassword);
+            statement.setString(2, email);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Password was changed.");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static void changeAddress(String email, String newAddress){
+        try {
+            String sql = "UPDATE user SET address = ? WHERE email = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newAddress);
+            statement.setString(2, email);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Address was changed.");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void changePhone(String email, String newPhone){
+        try {
+            String sql = "UPDATE user SET phone = ? WHERE email = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newPhone);
+            statement.setString(2, email);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Phone number was changed.");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static void updatePrices(String restName) {
+        try {
+            String sql = "UPDATE food SET price = price * 1.05 WHERE restaurant_name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, restName);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Food prices updated.");
+            }
+            String sql1 = "UPDATE beverage SET price = price * 1.05 WHERE restaurant_name = ?";
+            PreparedStatement statement1 = connection.prepareStatement(sql);
+            statement.setString(1, restName);
+            int rows1 = statement.executeUpdate();
+            if (rows1 > 0){
+                System.out.println("Beverages prices updated.");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static void updateCar(String driverName, String carName, String carNumber) {
+        try {
+            String sql = "UPDATE driver SET car_name = ?, car_number = ? WHERE driver_name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, carName);
+            statement.setString(2, carNumber);
+            statement.setString(3, driverName);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Car updated.");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static void deleteRestaurant(String restName){
+        try {
+            String sql = "DELETE FROM restaurant WHERE restaurant_name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, restName);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Restaurant deleted");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static void deleteDriver(String driverName){
+        try {
+            String sql = "DELETE FROM driver WHERE driver_name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, driverName);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Driver deleted");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static void deleteFood(String type, String restName, String foodName){
+        if (!(type.equals("food") || type.equals("beverage"))){
+            System.out.println("Inccorect type - should be food or beverage");
+            return;
+        }
+        try {
+            String sql = "DELETE FROM " + type +" WHERE food_name = ? and restaurant_name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, foodName);
+            statement.setString(2, restName);
+            int rows = statement.executeUpdate();
+            if (rows > 0){
+                System.out.println("Food deleted");
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

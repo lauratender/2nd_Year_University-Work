@@ -1,5 +1,4 @@
 package database;
-import services.ReadingService;
 
 import java.sql.*;
 
@@ -32,19 +31,5 @@ public class MySqlConn {
     public Connection getConnection(){
         return connection;
     }
-    /*
-    public static Connection getConection() throws Exception{
-        try{
-            Connection conn = DriverManager.getConnection(url, user, password);
-            if (conn != null)
-                System.out.println("Connected");
-            return conn;
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-        return null;
-    }
-    */
 
 }

@@ -12,8 +12,6 @@ public class ReadingService {
     final private UserServiceImpl userService;
     final private RatingServiceImpl ratingService;
     final private AuditService auditService;
-    //final private Reader reader;
-    //final private Writer writer;
     private static ReadingService instance = null;
 
     private ReadingService(){
@@ -22,8 +20,6 @@ public class ReadingService {
         userService = UserServiceImpl.getInstance();
         ratingService = RatingServiceImpl.getInstance();
         auditService = AuditService.getInstance();
-        //reader = Reader.getInstance();
-        //writer = Writer.getInstance();
         insertData();
     }
 
@@ -35,27 +31,22 @@ public class ReadingService {
 
     private void insertData() {
         // adaugare restaurante
-        //List<List<String>> restaurants = reader.read("restaurant");
         List<List<String>> restaurants = CRUD.getRestaurants();
         //System.out.println(restaurants);
         restaurantService.addRestaurants(restaurants);
 
         //adaugare produse
-        //List<List<String>> foods = reader.read("food");
         List<List<String>> foods = CRUD.getFoods();
         restaurantService.addFoods(foods);
 
-        //List<List<String>> beverages = reader.read("beverage");
         List<List<String>> beverages = CRUD.getBeverages();
         restaurantService.addBeverages(beverages);
 
         // adaugare useri
-        //List<List<String>> users = reader.read("user");
         List<List<String>> users = CRUD.getUsers();
         userService.addUsers(users);
 
         // adaugare soferi
-        //List<List<String>> drivers = reader.read("driver");
         List<List<String>> drivers = CRUD.getDrivers();
         orderService.addDrivers(drivers);
     }
@@ -63,7 +54,6 @@ public class ReadingService {
     private void watchMenue(String option, String email){
         if (option.equals("1")) {
             restaurantService.seeProducts();
-            //auditService.writeAction("watched menue");
             CRUD.writeAction("watched menue");
         }
         else{
@@ -71,7 +61,6 @@ public class ReadingService {
             System.out.println("Introduceti numele restaurantului");
             String restaurant = scanner.nextLine();
             restaurantService.seeProducts(restaurant);
-            //auditService.writeAction("watched restaurant's menue");
             CRUD.writeAction("watched restaurant's menue");
         }
 
@@ -94,7 +83,6 @@ public class ReadingService {
             nrProduse -= 1;
         }
         orderService.Order(restName, email, produse);
-        //auditService.writeAction("ordered");
         CRUD.writeAction("ordered");
     }
 
@@ -105,7 +93,6 @@ public class ReadingService {
         System.out.println("Scrieti ratingul de la 1 la 5");
         int value = scanner.nextInt();
         ratingService.giveRating(email, restName, value);
-        //auditService.writeAction("rated");
         CRUD.writeAction("rated");
     }
 
@@ -114,7 +101,6 @@ public class ReadingService {
         System.out.println("Introduceti numele restarantului");
         String restName = scanner.nextLine();
         ratingService.seeRating(restName);
-        //auditService.writeAction("watched rating");
         CRUD.writeAction("watched rating");
     }
 
@@ -130,8 +116,6 @@ public class ReadingService {
         userAddress = scanner.nextLine();
         userService.addUser(name, email, password, phoneNumber, userAddress);
         boolean status = CRUD.addUser(name, email, password, phoneNumber, userAddress);
-        //String line = userService.userToLine(name, email, password, phoneNumber, userAddress);
-        //writer.writeLine("user", line);
         if (status)
             return email;
         return null;
@@ -159,11 +143,9 @@ public class ReadingService {
         if(email == null){
             System.out.println("Adresa de email nu este exista sau optiunea selectata nu este corecta.");
             if(option.equals("1")) {
-                //auditService.writeAction("logged in");
                 CRUD.writeAction("logged in");
             }
             if(option.equals("2")) {
-                //auditService.writeAction("registered");
                 CRUD.writeAction("registered");
             }
             return;
@@ -178,6 +160,9 @@ public class ReadingService {
             System.out.println("4 pentru a da comanda;");
             System.out.println("5 pentru a da rating unui restaurant;");
             System.out.println("6 pentru a vedea istoricul comenzilor.");
+            System.out.println("7 pentru a schimba parola.");
+            System.out.println("8 pentru a schimba adresa.");
+            System.out.println("9 pentru a schimba telefonul.");
 
             option = scanner.nextLine();
             if(option.equals("exit"))
@@ -192,8 +177,25 @@ public class ReadingService {
                 rate(email);
             if (option.equals("6")) {
                 orderService.printUserOrders(email);
-                //auditService.writeAction("watched orders");
                 CRUD.writeAction("watched orders");
+            }
+            if (option.equals("7")) {
+                System.out.println("Introduceti noua parola");
+                String newPassword = scanner.nextLine();
+                CRUD.changePassword(email, newPassword);
+                CRUD.writeAction("changed password");
+            }
+            if (option.equals("8")) {
+                System.out.println("Introduceti noua adresa");
+                String newAddress = scanner.nextLine();
+                CRUD.changeAddress(email, newAddress);
+                CRUD.writeAction("changed address");
+            }
+            if (option.equals("9")) {
+                System.out.println("Introduceti noul numar de telefon");
+                String newPhone = scanner.nextLine();
+                CRUD.changePhone(email, newPhone);
+                CRUD.writeAction("chaged phone number");
             }
         }
     }
@@ -208,59 +210,75 @@ public class ReadingService {
             System.out.println("Alegeti optiunea dorita:");
             System.out.println("1 pentru a adauga un nou fel de mancare;");
             System.out.println("2 pentru a adauga un nou tip de bautura.");
+            System.out.println("3 pentru a creste preturile cu 5%.");
+            System.out.println("4 pentru a sterge un tip de mancare.");
+            System.out.println("5 pentru a sterge un tip de bautura.");
 
             String option = scanner.nextLine();
             if(option.equals("exit"))
                 return;
-            if (!(option.equals("1") || option.equals("2"))){
+            if (!(option.equals("1") || option.equals("2") || option.equals("3") || option.equals("4") || option.equals("5"))){
                 System.out.println("Optiune incorecta " + option);
-                return;
+                break;
             }
-            System.out.println("Introduceti numele produsului");
-            String prodName = scanner.nextLine();
-            System.out.println("Introduceti descrierea produsului");
-            String prodDesc = scanner.nextLine();
-            System.out.println("Introduceti pretul produsului");
-            int price = scanner.nextInt();
+            if (option.equals("1") || option.equals("2")){
+                System.out.println("Introduceti numele produsului");
+                String prodName = scanner.nextLine();
+                System.out.println("Introduceti descrierea produsului");
+                String prodDesc = scanner.nextLine();
+                System.out.println("Introduceti pretul produsului");
+                int price = scanner.nextInt();
 
-            if(option.equals("1")){
-                System.out.println("Introduceti gramajul produsului");
-                int g = scanner.nextInt();
-                scanner.nextLine();
+                if(option.equals("1")){
+                    System.out.println("Introduceti gramajul produsului");
+                    int g = scanner.nextInt();
+                    scanner.nextLine();
 
-                System.out.println("Introduceti numarul ingredientelor");
-                int nrIngrediente = scanner.nextInt();
-                scanner.nextLine();
+                    System.out.println("Introduceti numarul ingredientelor");
+                    int nrIngrediente = scanner.nextInt();
+                    scanner.nextLine();
 
-                ArrayList<String> ing = new ArrayList<>();
-                System.out.println("Introduceti numele produselor pe cate o linie");
-                while (nrIngrediente > 0){
-                    String ingredient = scanner.nextLine();
-                    ing.add(ingredient);
-                    nrIngrediente -= 1;
+                    ArrayList<String> ing = new ArrayList<>();
+                    System.out.println("Introduceti numele produselor pe cate o linie");
+                    while (nrIngrediente > 0){
+                        String ingredient = scanner.nextLine();
+                        ing.add(ingredient);
+                        nrIngrediente -= 1;
+                    }
+
+                    restaurantService.addFood(restName, prodName, prodDesc, price, g, ing);
+                    String ingredientsStr = String.join(";", ing);
+                    // scriu in food
+                    CRUD.addFood(restName, prodName, prodDesc, price, g, ingredientsStr);
+                    CRUD.writeAction("added food");
                 }
 
-                restaurantService.addFood(restName, prodName, prodDesc, price, g, ing);
-                String ingredientsStr = String.join(";", ing);
-                // scriu in food
-                // String line = restaurantService.foodToLine(restName, prodName, prodDesc, price, g, ing);
-                // writer.writeLine("food", line);
-                CRUD.addFood(restName, prodName, prodDesc, price, g, ingredientsStr);
-                //auditService.writeAction("added food");
-                CRUD.writeAction("added food");
+                if(option.equals("2")){
+                    System.out.println("Introduceti ml produsului");
+                    int ml = scanner.nextInt();
+                    scanner.nextLine();
+                    restaurantService.addBeverage(restName, prodName, prodDesc, price, ml);
+                    // scriu in beverage
+                    CRUD.addBeverage(restName, prodName, prodDesc, price, ml);
+                    CRUD.writeAction("added beverage");
+                }
             }
 
-            if(option.equals("2")){
-                System.out.println("Introduceti ml produsului");
-                int ml = scanner.nextInt();
-                scanner.nextLine();
-                restaurantService.addBeverage(restName, prodName, prodDesc, price, ml);
-                // scriu in beverage
-                //String line = restaurantService.beverageToLine(restName, prodName, prodDesc, price, ml);
-                //writer.writeLine("beverage", line);
-                CRUD.addBeverage(restName, prodName, prodDesc, price, ml);
-                //auditService.writeAction("added beverage");
-                CRUD.writeAction("added beverage");
+            if(option.equals("3")){
+                CRUD.updatePrices(restName);
+                CRUD.writeAction("updated prices");
+            }
+            if(option.equals("4")){
+                System.out.println("Introduceti numele felului de mancare.");
+                String foodName = scanner.nextLine();
+                CRUD.deleteFood("food", restName, foodName);
+                CRUD.writeAction("deleted food");
+            }
+            if(option.equals("5")){
+                System.out.println("Introduceti numele bauturii.");
+                String beverageName = scanner.nextLine();
+                CRUD.deleteFood("beverage", restName, beverageName);
+                CRUD.writeAction("deleted beverage");
             }
         }
     }
@@ -284,8 +302,6 @@ public class ReadingService {
 
         orderService.addDriver(name, email, telefon, salary, carName, carNumber);
 
-        //String line = orderService.driverToLine(name, email, telefon, salary, carName, carNumber);
-        //writer.writeLine("driver", line);
         CRUD.addDriver(name, email, telefon, salary, carName, carNumber);
         auditService.writeAction("added driver");
         CRUD.writeAction("added driver");
@@ -298,17 +314,50 @@ public class ReadingService {
             System.out.println("Alegeti optiunea dorita:");
             System.out.println("1 pentru a vedea comenzile in progres;");
             System.out.println("2 pentru a adauga un nou sofer.");
+            System.out.println("3 pentru a schimba masina unui sofer");
+            System.out.println("4 pentru a sterge un restaurant");
+            System.out.println("5 pentru a sterge un sofer");
+            System.out.println("6 pentru a adauga un restaurant");
 
             String option = scanner.nextLine();
             if (option.equals("exit"))
                 return;
             if (option.equals("1")) {
                 orderService.printOrdersInProgress();
-                //auditService.writeAction("watched orders in progress");
                 CRUD.writeAction("watched orders in progress");
             }
             if(option.equals("2"))
                 addDriver();
+            if(option.equals("3")){
+                System.out.println("Introduceti numele soferului");
+                String driverName = scanner.nextLine();
+                System.out.println("Introduceti tipui noii masini");
+                String driverCar = scanner.nextLine();
+                System.out.println("Introduceti numarul noii masini");
+                String driverCarNumber= scanner.nextLine();
+                CRUD.updateCar(driverName, driverCar, driverCarNumber);
+                CRUD.writeAction("updated driver's car");
+            }
+            if(option.equals("4")){
+                System.out.println("Introduceti numele restaurantului");
+                String restName = scanner.nextLine();
+                CRUD.deleteRestaurant(restName);
+                CRUD.writeAction("deleted restaurant");
+            }
+            if(option.equals("5")){
+                System.out.println("Introduceti numele soferului");
+                String driverName = scanner.nextLine();
+                CRUD.deleteDriver(driverName);
+                CRUD.writeAction("deleted driver");
+            }
+            if(option.equals("6")){
+                System.out.println("Introduceti numele restaurantului");
+                String restName = scanner.nextLine();
+                System.out.println("Introduceti adresa restaurantului");
+                String address = scanner.nextLine();
+                CRUD.addRestaurant(restName, address);
+                CRUD.writeAction("added restaurant");
+            }
         }
     }
 
