@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public void addUsers(List<List<String>> usersParam){
-        int i = 1;
+        int i = 0;
         while (i < usersParam.size()){
             List <String> line = usersParam.get(i);
             String name = line.get(0);
