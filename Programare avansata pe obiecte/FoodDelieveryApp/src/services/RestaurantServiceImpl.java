@@ -1,7 +1,6 @@
 package services;
 
 import model.Restaurant;
-import model.User;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,23 +43,11 @@ public class RestaurantServiceImpl implements RestaurantService{
             restaurants.put(name, r);
             i += 1;
         }
-        //Restaurant r = new Restaurant(name, address);
-        //restaurants.put(name, r);
     }
-
-    /*public void AddProduct(String name, String desc, int pr, boolean type, int quantity){
-        model.Product p;
-        if(!type) // beverage
-            p = new model.Beverage(name, desc, this, pr, quantity);
-        else // food
-            p = new model.Food(name, desc, this, pr, quantity);
-        products.add(p);
-    }*/
 
     @Override
     public void addFood(String restName, String name, String desc, int pr, int quantity, List<String> ingredients) {
         Restaurant r;
-        //System.out.println(restaurants);
         if (restaurants.containsKey(restName))
             r = restaurants.get(restName);
         else {
@@ -146,5 +133,8 @@ public class RestaurantServiceImpl implements RestaurantService{
         List<String> row = Arrays.asList(restName, prodName, prodDesc, Integer.toString(price), Integer.toString(ml));
         String line = "\n" + String.join(",", row) ;
         return line;
+    }
+    public boolean findRestaurant(String nume){
+        return restaurants.containsKey(nume);
     }
 }

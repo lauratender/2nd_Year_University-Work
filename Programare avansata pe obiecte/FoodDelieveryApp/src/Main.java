@@ -1,4 +1,3 @@
-import database.MySqlConn;
 import services.ReadingService;
 
 public class Main {

@@ -5,7 +5,7 @@ import java.sql.*;
 public class MySqlConn {
     private final String url = "jdbc:mysql://localhost:3306/proiect";
     private final String user = "root";
-    private final String password = "";
+    private final String password = "(Sql2205)";
     private Connection connection = null;
     private static MySqlConn instance = null;
 
@@ -30,6 +30,14 @@ public class MySqlConn {
 
     public Connection getConnection(){
         return connection;
+    }
+
+    public void closeConnection(){
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }
