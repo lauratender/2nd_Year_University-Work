@@ -113,3 +113,8 @@ public class Main {
 - la pornirea programului se vor încărca datele din fișiere utilizând serviciile create
 2. Realizarea unui serviciu de audit
 - se va realiza un serviciu care sa scrie într-un fișier de tip CSV de fiecare data când este executata una dintre acțiunile descrise in prima etapa. Structura fișierului: nume_actiune, timestamp
+
+### Cerințele celei de-a treia etape
+Înlocuiți serviciile realizate în etapa a II-a cu servicii care sa asigure persistenta utilizând baza de date folosind JDBC.
+-	sa se realizeze servicii care sa expună operații de tip create, read, update, delete pentru cel puțin 4 dintre clasele definite
+
